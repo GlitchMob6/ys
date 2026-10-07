@@ -152,21 +152,7 @@
     subscribeClickedAt = Date.now();
     pageWentHidden = false;
 
-    // Open YouTube in a new tab (or external YouTube app on mobile)
-    try {
-      const win = window.open(
-        CONFIG.YOUTUBE_SUBSCRIBE_URL,
-        "_blank",
-        "noopener,noreferrer"
-      );
-      // Fallback if popup was blocked by mobile browser
-      if (!win) {
-        window.location.href = CONFIG.YOUTUBE_SUBSCRIBE_URL;
-      }
-    } catch {
-      window.location.href = CONFIG.YOUTUBE_SUBSCRIBE_URL;
-    }
-
+    // The native <a> tag with target="_blank" handles opening the URL reliably
     transitionTo("subscription_started");
   }
 
@@ -224,9 +210,12 @@
     if (configErrors.length > 0) {
       errorBanner.textContent = configErrors.join(" ");
       errorBanner.classList.add("active");
-      btnSubscribe.disabled = true;
+      btnSubscribe.removeAttribute("href");
+      btnSubscribe.style.pointerEvents = "none";
       btnSubscribe.style.opacity = "0.4";
       btnSubscribe.style.cursor = "not-allowed";
+    } else {
+      btnSubscribe.href = CONFIG.YOUTUBE_SUBSCRIBE_URL;
     }
 
     // Clear any old persisted state from previous version
