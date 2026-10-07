@@ -1,0 +1,463 @@
+/* ============================================================
+   Global Reset & Variables
+   ============================================================ */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Palette */
+  --bg-primary: #0a0a0f;
+  --bg-card: rgba(255, 255, 255, 0.04);
+  --bg-card-border: rgba(255, 255, 255, 0.08);
+  --text-primary: #f0f0f5;
+  --text-secondary: rgba(240, 240, 245, 0.55);
+  --text-muted: rgba(240, 240, 245, 0.35);
+
+  /* YouTube-red accent */
+  --accent: #ff0033;
+  --accent-glow: rgba(255, 0, 51, 0.35);
+  --accent-hover: #e6002e;
+
+  /* Unlock-green accent */
+  --success: #00e676;
+  --success-glow: rgba(0, 230, 118, 0.3);
+  --success-hover: #00c764;
+
+  /* Spacing */
+  --content-max-width: 480px;
+  --radius: 16px;
+  --btn-radius: 12px;
+
+  /* Typography */
+  --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+  padding: max(24px, env(safe-area-inset-top, 24px))
+           max(16px, env(safe-area-inset-right, 16px))
+           max(24px, env(safe-area-inset-bottom, 24px))
+           max(16px, env(safe-area-inset-left, 16px));
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ============================================================
+   Ambient background glow
+   ============================================================ */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 600px 400px at 50% 30%, rgba(255, 0, 51, 0.08), transparent),
+    radial-gradient(ellipse 500px 500px at 70% 80%, rgba(100, 60, 255, 0.06), transparent);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================================
+   Card container
+   ============================================================ */
+.gate-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--content-max-width);
+  background: var(--bg-card);
+  border: 1px solid var(--bg-card-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  padding: 48px 32px;
+  text-align: center;
+  transition: border-color 0.5s ease, box-shadow 0.5s ease;
+  box-shadow: 0 16px 48px -12px rgba(0, 0, 0, 0.5);
+  margin: auto;
+  word-wrap: break-word;
+}
+
+.gate-card.unlocked {
+  border-color: rgba(0, 230, 118, 0.2);
+  box-shadow: 0 16px 48px -12px rgba(0, 230, 118, 0.15);
+}
+
+/* ============================================================
+   Icon / Emoji
+   ============================================================ */
+.gate-icon {
+  font-size: 2.75rem;
+  margin-bottom: 20px;
+  display: block;
+  line-height: 1;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ============================================================
+   Heading
+   ============================================================ */
+.gate-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+  line-height: 1.25;
+  color: var(--text-primary);
+}
+
+/* ============================================================
+   Description
+   ============================================================ */
+.gate-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 32px;
+  max-width: 360px;
+  margin-inline: auto;
+}
+
+/* ============================================================
+   Step indicator dots
+   ============================================================ */
+.steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 28px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.step-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+}
+
+.step-dot.active {
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
+  transform: scale(1.3);
+}
+
+.step-dot.complete {
+  background: var(--success);
+  box-shadow: 0 0 8px var(--success-glow);
+  transform: scale(1.3);
+}
+
+/* ============================================================
+   Shared button base
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 32px;
+  border-radius: var(--btn-radius);
+  font-family: var(--font);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  transition:
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.15s ease,
+    filter 0.15s ease,
+    opacity 0.4s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  min-height: 52px;
+  width: 100%;
+  max-width: 340px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.btn svg {
+  flex-shrink: 0;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 3px;
+}
+
+.btn:active {
+  transform: scale(0.97);
+  filter: brightness(0.92);
+}
+
+/* ============================================================
+   Subscribe button  (red)
+   ============================================================ */
+.btn-subscribe {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 24px var(--accent-glow);
+}
+
+.btn-subscribe:hover {
+  background: var(--accent-hover);
+  box-shadow: 0 6px 32px var(--accent-glow);
+}
+
+/* ============================================================
+   Access button  (green)
+   ============================================================ */
+.btn-access {
+  background: var(--success);
+  color: #0a0a0f;
+  box-shadow: 0 4px 24px var(--success-glow);
+}
+
+.btn-access:hover {
+  background: var(--success-hover);
+  box-shadow: 0 6px 32px var(--success-glow);
+}
+
+/* ============================================================
+   Button wrappers & transitions
+   ============================================================ */
+.btn-wrapper {
+  overflow: hidden;
+  transition: max-height 0.5s ease, opacity 0.5s ease;
+}
+
+.btn-wrapper.hidden {
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.btn-wrapper.visible {
+  max-height: 120px;
+  opacity: 1;
+}
+
+/* ============================================================
+   Waiting spinner
+   ============================================================ */
+.waiting-indicator {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.waiting-indicator.active {
+  display: flex;
+}
+
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--text-muted);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.waiting-text {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* ============================================================
+   Success badge
+   ============================================================ */
+.success-badge {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--success);
+  animation: fadeSlideUp 0.5s ease both;
+}
+
+.success-badge.active {
+  display: flex;
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================
+   Error banner
+   ============================================================ */
+.error-banner {
+  display: none;
+  background: rgba(255, 60, 60, 0.12);
+  border: 1px solid rgba(255, 60, 60, 0.25);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 24px;
+  font-size: 0.85rem;
+  color: #ff6b6b;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.error-banner.active {
+  display: block;
+}
+
+/* ============================================================
+   Responsive Breakpoints
+   ============================================================ */
+
+/* Standard tablets and mobiles */
+@media (max-width: 480px) {
+  .gate-card {
+    padding: 36px 20px;
+    border-radius: 20px;
+  }
+
+  .gate-icon {
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+  }
+
+  .gate-title {
+    font-size: 1.35rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+  }
+
+  .gate-desc {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    margin-bottom: 26px;
+  }
+
+  .steps {
+    margin-bottom: 24px;
+    gap: 8px;
+  }
+
+  .btn {
+    padding: 15px 20px;
+    font-size: 0.9rem;
+    min-height: 50px;
+    max-width: 100%;
+  }
+
+  .waiting-text {
+    font-size: 0.82rem;
+    padding-inline: 8px;
+  }
+}
+
+/* Small mobile devices (e.g. iPhone SE, 320px–375px screens) */
+@media (max-width: 360px) {
+  .gate-card {
+    padding: 28px 16px;
+    border-radius: 16px;
+  }
+
+  .gate-icon {
+    font-size: 2.2rem;
+    margin-bottom: 12px;
+  }
+
+  .gate-title {
+    font-size: 1.2rem;
+  }
+
+  .gate-desc {
+    font-size: 0.84rem;
+    margin-bottom: 20px;
+  }
+
+  .btn {
+    padding: 13px 16px;
+    font-size: 0.85rem;
+    min-height: 48px;
+    letter-spacing: 0.02em;
+  }
+}
+
+/* Mobile landscape orientation */
+@media (max-height: 540px) {
+  body {
+    padding-top: max(16px, env(safe-area-inset-top));
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+  }
+
+  .gate-card {
+    padding: 24px 20px;
+  }
+
+  .gate-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
+  .gate-title {
+    font-size: 1.2rem;
+    margin-bottom: 6px;
+  }
+
+  .gate-desc {
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+  }
+
+  .steps {
+    margin-bottom: 16px;
+  }
+
+  .btn {
+    min-height: 46px;
+    padding: 12px 20px;
+  }
+}
