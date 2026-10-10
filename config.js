@@ -18,5 +18,5 @@
 
 const CONFIG = Object.freeze({
   YOUTUBE_SUBSCRIBE_URL: "https://www.youtube.com/@ApnaSapnaMoneyMoney-w9g?sub_confirmation=1",
-  GOOGLE_DRIVE_URL: "https://drive.google.com/drive/folders/1uQzuTfHs-s_FuWM3XyGUo8UCe7i_x6CZ?usp=sharing",
+  GOOGLE_DRIVE_URL: "https://drive.google.com/drive/folders/1ggSgIMKX4Bix3Y1Kbvpv15_A3uP6n6t0?usp=sharing",
 });
