@@ -17,7 +17,7 @@ Edit `config.js`:
 ```javascript
 const CONFIG = Object.freeze({
   YOUTUBE_SUBSCRIBE_URL: "https://www.youtube.com/@YOUR_CHANNEL?sub_confirmation=1",
-  GOOGLE_DRIVE_URL: "https://drive.google.com/drive/folders/YOUR_FOLDER_ID"
+  GOOGLE_DRIVE_URL: "https://drive.google.com/drive/folders/1qOhMRpAps3PqWVYxNuMlZif4hQFtDxln?usp=drive_link"
 });
 ```
 
